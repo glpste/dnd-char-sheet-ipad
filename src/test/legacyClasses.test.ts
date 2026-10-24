@@ -29,8 +29,10 @@ describe('Safari 10 class usage', () => {
         .map((s) => `${relative(SRC, file)}: "${s.trim()}"`),
     );
 
-  it('flex containers do not rely on gap-*', () => {
-    expect(offenders((s) => /(^|\s)(inline-)?flex(\s|$)/.test(s) && /(^|\s)gap-/.test(s))).toEqual([]);
+  it('gap-* only appears alongside grid or columns in the same class string', () => {
+    // Stricter than checking flex containers: catches `cx('flex', cond && 'gap-2')`, where the
+    // gap utility sits in a literal of its own.
+    expect(offenders((s) => /(^|\s)gap-/.test(s) && !/(^|\s)(grid|columns-)/.test(s))).toEqual([]);
   });
 
   it('nothing uses h-screen or min-h-screen', () => {

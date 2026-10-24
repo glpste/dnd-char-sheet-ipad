@@ -28,6 +28,14 @@ function checkCss(label, css) {
     [/rgba?\(\d+ /, 'space-separated rgb()'],
     [/\(\s*(min-|max-)?width\s*[<>]=?/, 'range media query'],
     [/[{;]inset:/, 'inset shorthand'],
+    [/(clamp|min|max)\(/, 'clamp()/min()/max()'],
+    [/aspect-ratio:/, 'aspect-ratio'],
+    [/(inset|margin|padding|border)-(inline|block)/, 'logical property'],
+    [/hsla?\(\d+ /, 'space-separated hsl()'],
+    [/@layer|@container/, '@layer/@container'],
+    [/\d(d|s|l)vh/, 'dvh/svh/lvh unit'],
+    [/[{;]backdrop-filter:/, 'unprefixed backdrop-filter'],
+    [/:focus-within/, ':focus-within'],
   ];
   for (const [re, name] of checks) if (re.test(css)) problems.push(`${label}: ${name}`);
   // Tailwind's preflight uses :where() on a few element resets. Safari 10 drops those rules, which is
