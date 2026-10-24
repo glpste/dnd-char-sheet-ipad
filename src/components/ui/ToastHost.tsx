@@ -6,12 +6,12 @@ export function ToastHost() {
   const { toasts, dismissToast } = useToast();
   if (toasts.length === 0) return null;
   return (
-    <div className="pointer-events-none fixed bottom-4 right-4 z-40 flex flex-col gap-2" aria-live="polite">
+    <div className="pointer-events-none fixed bottom-4 right-4 z-40 flex flex-col space-y-2" aria-live="polite">
       {toasts.map((t) => (
         <div
           key={t.id}
           role="status"
-          className="pointer-events-auto flex items-center gap-3 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm shadow-lg motion-safe:animate-fade-in dark:border-zinc-700 dark:bg-zinc-900"
+          className="pointer-events-auto flex items-center space-x-3 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm shadow-lg motion-safe:animate-fade-in dark:border-zinc-700 dark:bg-zinc-900"
         >
           <span>{t.message}</span>
           {t.action && (

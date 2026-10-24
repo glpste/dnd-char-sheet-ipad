@@ -18,7 +18,7 @@ export function Toggle({ checked, onChange, label, hideLabel = false, className 
       aria-checked={checked}
       aria-label={hideLabel ? label : undefined}
       onClick={() => onChange(!checked)}
-      className={cx('inline-flex items-center gap-2 text-sm', className)}
+      className={cx('inline-flex items-center space-x-2 text-sm', className)}
     >
       <span
         aria-hidden="true"

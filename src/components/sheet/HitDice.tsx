@@ -9,7 +9,7 @@ export function HitDice() {
   return (
     <div className={cx(panel, 'px-2 py-1.5')}>
       <div className={panelTitle}>Hit dice</div>
-      <div className="flex items-baseline gap-1">
+      <div className="flex items-baseline space-x-1">
         <NumberField
           aria-label="Hit dice remaining"
           value={hd.current}

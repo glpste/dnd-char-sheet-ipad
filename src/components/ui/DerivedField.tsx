@@ -23,7 +23,7 @@ export function DerivedField({ auto, override, onOverride, label, signed = true,
   const shown = override ?? auto;
   const overridden = override !== undefined;
   return (
-    <span className={cx('inline-flex items-center gap-1', className)}>
+    <span className={cx('inline-flex items-center space-x-1', className)}>
       <NumberField
         aria-label={label}
         value={shown}

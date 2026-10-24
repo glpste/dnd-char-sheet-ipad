@@ -15,12 +15,12 @@ export function DeathSaves() {
   return (
     <div className={cx(panel, 'px-2 py-1.5')}>
       <div className={panelTitle}>Death saves</div>
-      <div className="mt-1 flex flex-col gap-1 text-xs">
-        <div className="flex items-center justify-between gap-2">
+      <div className="mt-1 flex flex-col space-y-1 text-xs">
+        <div className="flex items-center justify-between space-x-2">
           <span className="text-zinc-500 dark:text-zinc-400">Successes</span>
           <Pips label="Death save success" total={3} filled={ds.successes} variant="success" onToggle={(i) => toggle('successes', i)} />
         </div>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between space-x-2">
           <span className="text-zinc-500 dark:text-zinc-400">Failures</span>
           <Pips label="Death save failure" total={3} filled={ds.failures} variant="danger" onToggle={(i) => toggle('failures', i)} />
         </div>

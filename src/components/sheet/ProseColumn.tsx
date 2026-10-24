@@ -13,7 +13,7 @@ const PERSONALITY = [
 export function ProseColumn() {
   const { character, dispatch } = useCharacter();
   return (
-    <div className="flex min-h-0 flex-col gap-1.5">
+    <div className="flex min-h-0 flex-col space-y-1.5">
       {PERSONALITY.map((p) => (
         <Panel key={p.key} title={p.label} className="max-h-28">
           <TextArea

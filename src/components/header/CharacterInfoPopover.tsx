@@ -34,7 +34,7 @@ export function CharacterInfoPopover() {
     .join(' · ');
 
   const field = (label: string, key: keyof typeof info) => (
-    <label className="flex flex-col gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+    <label className="flex flex-col space-y-0.5 text-xs text-zinc-500 dark:text-zinc-400">
       {label}
       <TextField
         aria-label={label}
@@ -65,7 +65,7 @@ export function CharacterInfoPopover() {
             {field('Race', 'race')}
           </div>
           {field('Class', 'class')}
-          <label className="flex flex-col gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <label className="flex flex-col space-y-0.5 text-xs text-zinc-500 dark:text-zinc-400">
             Level
             <NumberField
               aria-label="Level"
@@ -76,7 +76,7 @@ export function CharacterInfoPopover() {
               className="border-zinc-300 text-sm text-zinc-900 dark:border-zinc-700 dark:text-zinc-100"
             />
           </label>
-          <label className="flex flex-col gap-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+          <label className="flex flex-col space-y-0.5 text-xs text-zinc-500 dark:text-zinc-400">
             Experience points
             <NumberField
               aria-label="Experience points"

@@ -84,7 +84,7 @@ export function ConfirmDialog({
           {title}
         </h2>
         {children && <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">{children}</div>}
-        <div className="mt-4 flex justify-end gap-2">
+        <div className="mt-4 flex justify-end space-x-2">
           <button ref={confirmRef} type="button" className={cx(danger ? btnDanger : btnPrimary)} onClick={onConfirm}>
             {confirmLabel}
           </button>

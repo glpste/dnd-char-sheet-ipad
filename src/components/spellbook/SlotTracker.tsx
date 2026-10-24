@@ -18,7 +18,7 @@ export function SlotTracker() {
     <Panel
       title="Spell slots"
       right={
-        <div className="flex gap-1">
+        <div className="flex space-x-1">
           <button type="button" className={btn} aria-pressed={editing} onClick={() => setEditing((e) => !e)}>
             {editing ? 'Done' : 'Edit slots'}
           </button>
@@ -31,9 +31,9 @@ export function SlotTracker() {
       {visible.length === 0 && (
         <p className="text-sm text-zinc-400 dark:text-zinc-500">No spell slots. Use “Edit slots” to set totals per level.</p>
       )}
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col space-y-1">
         {visible.map((l) => (
-          <div key={l} data-testid={`slots-${l}`} className="flex items-center gap-3 text-sm">
+          <div key={l} data-testid={`slots-${l}`} className="flex items-center space-x-3 text-sm">
             <span className="w-14 text-zinc-500 dark:text-zinc-400">Level {l}</span>
             {editing ? (
               <NumberField
@@ -57,7 +57,7 @@ export function SlotTracker() {
                 onToggle={(index) => dispatch({ type: 'slots/toggle', level: l, index })}
               />
             )}
-            <span className={cx('ml-auto tabular-nums text-xs text-zinc-400')}>
+            <span className={cx('!ml-auto tabular-nums text-xs text-zinc-400')}>
               {slots[l].total - slots[l].used} / {slots[l].total} left
             </span>
           </div>

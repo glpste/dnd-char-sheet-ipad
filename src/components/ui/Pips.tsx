@@ -19,7 +19,7 @@ const FILL: Record<NonNullable<PipsProps['variant']>, string> = {
 /** Row of clickable circles, e.g. death saves or spell slots. */
 export function Pips({ total, filled, onToggle, label, variant = 'neutral', className }: PipsProps) {
   return (
-    <div role="group" aria-label={label} className={cx('flex flex-wrap items-center gap-1', className)}>
+    <div role="group" aria-label={label} className={cx('flex flex-wrap items-center space-x-1', className)}>
       {Array.from({ length: total }, (_, i) => {
         const on = i < filled;
         return (

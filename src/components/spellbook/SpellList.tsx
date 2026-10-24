@@ -62,7 +62,7 @@ export function SpellList() {
       title="Spells"
       className="min-h-0 flex-1"
       right={
-        <div className="flex items-center gap-3">
+        <div className="flex items-center space-x-3">
           <input
             type="search"
             aria-label="Search spells"

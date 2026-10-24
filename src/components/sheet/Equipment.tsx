@@ -10,9 +10,9 @@ export function Equipment() {
   const eq = character.equipment;
   return (
     <Panel title="Equipment" className="min-h-0">
-      <div className="mb-1 flex items-center gap-2">
+      <div className="mb-1 flex items-center space-x-2">
         {COINS.map((k) => (
-          <label key={k} className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+          <label key={k} className="flex items-center space-x-1 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
             {k.toUpperCase()}
             <NumberField
               aria-label={k.toUpperCase()}

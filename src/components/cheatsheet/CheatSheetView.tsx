@@ -16,7 +16,7 @@ export function CheatSheetView() {
 
   return (
     <div className="grid h-full min-h-0 grid-cols-[2fr_1fr] gap-2">
-      <div className="flex min-h-0 flex-col gap-2">
+      <div className="flex min-h-0 flex-col space-y-2">
         <input
           type="search"
           aria-label="Search cheat sheet"

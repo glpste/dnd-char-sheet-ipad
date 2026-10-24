@@ -32,7 +32,7 @@ export function Panel({ title, children, className, right }: { title?: string; c
   return (
     <section className={cx(panel, 'flex min-h-0 flex-col px-2 py-1.5', className)}>
       {(title || right) && (
-        <header className="mb-1 flex items-center justify-between gap-2">
+        <header className="mb-1 flex items-center justify-between space-x-2">
           {title && <h2 className={panelTitle}>{title}</h2>}
           {right}
         </header>

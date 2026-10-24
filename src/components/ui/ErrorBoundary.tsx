@@ -65,7 +65,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (!this.state.error) return this.props.children;
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-100 p-6 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+      <div className="flex min-h-full items-center justify-center bg-zinc-100 p-6 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
         <div className="max-w-lg rounded-lg border border-zinc-300 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
           <h1 className="text-lg font-medium">Something went wrong</h1>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
@@ -76,7 +76,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <pre className="mt-3 max-h-32 overflow-auto rounded bg-zinc-100 p-2 text-xs text-red-700 dark:bg-zinc-950 dark:text-red-300">
             {this.state.error.message}
           </pre>
-          <div className="mt-4 flex flex-wrap justify-end gap-2">
+          <div className="mt-4 flex flex-wrap justify-end space-x-2">
             <button type="button" className={btn} onClick={() => window.location.reload()}>
               Reload
             </button>

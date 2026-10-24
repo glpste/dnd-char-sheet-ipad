@@ -36,12 +36,12 @@ export function SpellEntry({
   };
 
   const meta = [s.castingTime, s.range, s.components, s.duration].filter(Boolean).join(' · ');
-  const small = 'flex flex-col gap-0.5 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400';
+  const small = 'flex flex-col space-y-0.5 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400';
   const field = 'border-zinc-300 text-sm normal-case tracking-normal dark:border-zinc-700';
 
   return (
     <li className="border-b border-zinc-200 py-1 last:border-b-0 dark:border-zinc-800">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center space-x-2">
         <button
           type="button"
           aria-label={`${open ? 'Collapse' : 'Expand'} ${name}`}
@@ -95,7 +95,7 @@ export function SpellEntry({
             Description
             <TextArea aria-label="Description" value={s.description} minRows={3} placeholder="What the spell does, damage, saves, higher-level scaling…" onChange={(v) => update({ description: v })} className={field} />
           </label>
-          <div className="col-span-5 flex justify-end gap-1">
+          <div className="col-span-5 flex justify-end space-x-1">
             <button type="button" className={btnGhost} aria-label={`Move ${name} up`} disabled={isFirst} onClick={() => dispatch({ type: 'spell/move', id: s.id, dir: -1 })}>
               ↑
             </button>

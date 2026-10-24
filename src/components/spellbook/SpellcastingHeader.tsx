@@ -14,7 +14,7 @@ export function SpellcastingHeader() {
   const box = cx(panel, 'flex flex-col items-center px-3 py-1.5 text-center');
   const dash = <span className="text-2xl font-medium text-zinc-400">—</span>;
   return (
-    <div className="flex items-stretch gap-2">
+    <div className="flex items-stretch space-x-2">
       <div className={cx(box, 'items-start')}>
         <label className={panelTitle} htmlFor="spell-ability">
           Spellcasting ability

@@ -54,7 +54,7 @@ function TopStats() {
 /** Column C: pinned combat stats; weapons and equipment are added below in later tasks. */
 export function CombatColumn({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="flex min-h-0 flex-col gap-1.5">
+    <div className="flex min-h-0 flex-col space-y-1.5">
       <TopStats />
       <HpBlock />
       <div className="grid grid-cols-2 gap-1.5">

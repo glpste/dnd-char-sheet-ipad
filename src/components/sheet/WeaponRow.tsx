@@ -42,7 +42,7 @@ export function WeaponRow({ weapon, index, count }: { weapon: Weapon; index: num
     });
   };
 
-  const labelCls = 'flex flex-col gap-0.5 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400';
+  const labelCls = 'flex flex-col space-y-0.5 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400';
 
   return (
     <li data-testid="weapon-row" className="border-b border-zinc-200 py-1 last:border-b-0 dark:border-zinc-800">
@@ -99,7 +99,7 @@ export function WeaponRow({ weapon, index, count }: { weapon: Weapon; index: num
               ))}
             </select>
           </label>
-          <label className="flex items-center gap-2 self-end text-sm">
+          <label className="flex items-center space-x-2 self-end text-sm">
             <input type="checkbox" aria-label="Proficient" checked={w.proficient} onChange={(e) => update({ proficient: e.target.checked })} className="accent-amber-500" />
             Proficient
           </label>
@@ -131,7 +131,7 @@ export function WeaponRow({ weapon, index, count }: { weapon: Weapon; index: num
             Notes
             <TextArea aria-label="Notes" value={w.notes} onChange={(v) => update({ notes: v })} className="border-zinc-300 normal-case tracking-normal dark:border-zinc-700" />
           </label>
-          <div className="col-span-4 flex justify-end gap-1">
+          <div className="col-span-4 flex justify-end space-x-1">
             <button type="button" className={btnGhost} aria-label={`Move ${name} up`} disabled={index === 0} onClick={() => dispatch({ type: 'weapon/move', id: w.id, dir: -1 })}>
               ↑
             </button>

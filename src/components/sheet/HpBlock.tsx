@@ -36,10 +36,10 @@ export function HpBlock() {
 
   return (
     <div className={cx(panel, 'border-amber-500/70 bg-amber-50 px-2 py-1.5 dark:border-amber-500/60 dark:bg-amber-950/30')}>
-      <div className="flex items-end justify-between gap-2">
+      <div className="flex items-end justify-between space-x-2">
         <div>
           <div className={panelTitle}>Hit points</div>
-          <div className="flex items-baseline gap-1">
+          <div className="flex items-baseline space-x-1">
             <NumberField
               aria-label="Current hit points"
               value={hp.current}
@@ -70,7 +70,7 @@ export function HpBlock() {
             className="w-12 text-center text-xl"
           />
         </div>
-        <div className="flex gap-1">
+        <div className="flex space-x-1">
           {QUICK.map((q) => (
             <button
               key={q.label}

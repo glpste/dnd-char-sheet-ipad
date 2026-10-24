@@ -16,10 +16,10 @@ export function HeaderBar({ view, setView }: { view: View; setView: (v: View) =>
   const roster = useRoster();
   const { saveState } = useCharacter();
   return (
-    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-zinc-300 bg-white px-3 dark:border-zinc-800 dark:bg-zinc-900">
+    <header className="flex h-12 shrink-0 items-center space-x-3 border-b border-zinc-300 bg-white px-3 dark:border-zinc-800 dark:bg-zinc-900">
       <CharacterSwitcher {...roster} />
       <CharacterInfoPopover />
-      <nav className="ml-auto flex items-center gap-1 rounded-md bg-zinc-200 p-0.5 dark:bg-zinc-800" aria-label="Views">
+      <nav className="!ml-auto flex items-center space-x-1 rounded-md bg-zinc-200 p-0.5 dark:bg-zinc-800" aria-label="Views">
         {VIEWS.map((v, i) => (
           <button
             key={v}

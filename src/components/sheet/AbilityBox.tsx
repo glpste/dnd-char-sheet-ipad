@@ -29,7 +29,7 @@ export function AbilityBox({ ability }: { ability: Ability }) {
 
 export function AbilityColumn() {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col space-y-1.5">
       {(['str', 'dex', 'con', 'int', 'wis', 'cha'] as const).map((a) => (
         <AbilityBox key={a} ability={a} />
       ))}

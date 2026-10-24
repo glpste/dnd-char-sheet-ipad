@@ -25,11 +25,11 @@ function Row({
   dot: React.ReactNode;
 }) {
   return (
-    <div data-testid={testId} className="flex items-center gap-1.5 py-[1px] text-sm leading-tight">
+    <div data-testid={testId} className="flex items-center space-x-1.5 py-[1px] text-sm leading-tight">
       {dot}
       <span className="truncate">{label}</span>
       {abilityTag && <span className="text-[10px] uppercase text-zinc-400 dark:text-zinc-500">{abilityTag}</span>}
-      <span className="ml-auto">{children}</span>
+      <span className="!ml-auto">{children}</span>
     </div>
   );
 }
@@ -116,7 +116,7 @@ export function SavesSkillsColumn() {
   const { character, dispatch } = useCharacter();
   const autoPassive = 10 + skillTotal(character, 'perception');
   return (
-    <div className="flex min-h-0 flex-col gap-1.5">
+    <div className="flex min-h-0 flex-col space-y-1.5">
       <div className="grid grid-cols-2 gap-1.5">
         <div className={cx(panel, 'flex items-center justify-between px-2 py-1.5')}>
           <span className={panelTitle}>Inspiration</span>

@@ -19,7 +19,7 @@ export default function App() {
   }, [character.info.name]);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+    <div className="flex h-full flex-col overflow-hidden bg-zinc-100 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
       <HeaderBar view={view} setView={setView} />
       <main className="min-h-0 flex-1 p-2">
         <h1 className="sr-only">{VIEW_LABELS[view]}</h1>
