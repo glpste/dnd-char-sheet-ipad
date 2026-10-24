@@ -1,4 +1,8 @@
-# D&D 5E character sheet
+# D&D 5E character sheet (iPad 4 build)
+
+**This is a frozen snapshot of [dnd-char-sheet](https://github.com/glpste/dnd-char-sheet) built to run on an iPad 4 (iOS 10.3, Safari 10.1).** It ships an ES5 bundle with polyfills and avoids CSS that Safari 10 cannot parse; `npm run check:legacy` guards the build output. New features land in the main repo, not here. Move a character over with **Export / import → Paste JSON…**.
+
+Live: <https://glpste.github.io/dnd-char-sheet-ipad/>
 
 A single-page character sheet for D&D 5th edition, built for a desktop or landscape screen at the table. It reproduces page 1 of the official fillable PDF (in `res/`), auto-calculates everything the rules let it, and adds:
 
@@ -7,7 +11,7 @@ A single-page character sheet for D&D 5th edition, built for a desktop or landsc
 - a built-in **cheat sheet** of core 2014-rules mechanics (SRD 5.1) plus personal notes per character;
 - several characters per browser, with JSON export and import.
 
-Live: <https://glpste.github.io/dnd-char-sheet/>
+Main app: <https://glpste.github.io/dnd-char-sheet/>
 
 ## Your data stays in your browser
 

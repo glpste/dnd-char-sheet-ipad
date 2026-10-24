@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* iOS 10.3 / Safari 10.1 fallbacks. */
+@layer base {
+  /* Tailwind's preflight button reset uses :where(), which Safari 10 drops as a whole rule. */
+  button,
+  [type='button'],
+  [type='reset'],
+  [type='submit'] {
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+  }
+
+  /* Preflight's [hidden] rule also uses :where(). */
+  [hidden] {
+    display: none;
+  }
+
+  /* 100vh is taller than the visible area on iPad Safari; the app shell uses h-full instead of h-screen. */
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  /* Momentum scrolling for nested scroll panes. */
+  .overflow-auto,
+  .overflow-y-auto,
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
