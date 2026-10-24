@@ -94,11 +94,13 @@ export function ExportImportMenu() {
     pushToast(ok ? 'Copied to clipboard' : 'Copy failed: select the text and copy it by hand');
   };
 
+  const closePaste = () => {
+    setPasteOpen(false);
+    setPasteText('');
+  };
+
   const submitPaste = () => {
-    if (handleJsonText(pasteText)) {
-      setPasteOpen(false);
-      setPasteText('');
-    }
+    if (handleJsonText(pasteText)) closePaste();
   };
 
   const finishImport = (mode: 'add' | 'replace') => {
@@ -191,7 +193,7 @@ export function ExportImportMenu() {
           onFocus={(e) => selectAll(e.target)}
         />
       </ConfirmDialog>
-      <ConfirmDialog open={pasteOpen} title="Paste JSON" confirmLabel="Import" onConfirm={submitPaste} onCancel={() => setPasteOpen(false)}>
+      <ConfirmDialog open={pasteOpen} title="Paste JSON" confirmLabel="Import" onConfirm={submitPaste} onCancel={closePaste}>
         <p>Paste an exported character (or export file) below.</p>
         <textarea
           aria-label="Character JSON"

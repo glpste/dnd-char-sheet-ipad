@@ -62,3 +62,17 @@ describe('NumberField on iOS 10', () => {
     expect(onChange).toHaveBeenCalledWith(7);
   });
 });
+
+describe('NumberField with external updates', () => {
+  it('discards the edit when the value prop changes while editing', async () => {
+    const onChange = vi.fn();
+    const { rerender } = render(<NumberField aria-label="Score" value={12} onChange={onChange} />);
+    const input = screen.getByLabelText('Score');
+    await userEvent.clear(input);
+    await userEvent.type(input, '7');
+    rerender(<NumberField aria-label="Score" value={20} onChange={onChange} />);
+    await userEvent.tab();
+    expect(onChange).not.toHaveBeenCalled();
+    expect(input).toHaveValue('20');
+  });
+});

@@ -122,3 +122,16 @@ describe('importResultMessage', () => {
     expect(importResultMessage({ ok: false, error: 'bad' })).toBe('bad');
   });
 });
+
+describe('ExportImportMenu paste box reset', () => {
+  it('clears pasted text when the dialog is cancelled', async () => {
+    renderWithCharacter(<ExportImportMenu />);
+    await userEvent.click(screen.getByRole('button', { name: 'Export / import' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Paste JSON…' }));
+    await userEvent.type(screen.getByRole('textbox', { name: 'Character JSON' }), 'stale');
+    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Export / import' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Paste JSON…' }));
+    expect(screen.getByRole('textbox', { name: 'Character JSON' })).toHaveValue('');
+  });
+});
