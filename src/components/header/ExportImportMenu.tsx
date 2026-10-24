@@ -5,6 +5,12 @@ import { useRoster, useToast } from '../../store/useCharacter';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { btn, menu, menuItem } from '../ui/styles';
 
+/** iOS ignores HTMLTextAreaElement.select(); setSelectionRange works on a readonly field. */
+function selectAll(el: HTMLTextAreaElement | null): void {
+  if (!el) return;
+  el.setSelectionRange(0, el.value.length);
+}
+
 /** Safari 10 has no Blob.prototype.text, so read files the old way. */
 function readFileText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -55,7 +61,7 @@ export function ExportImportMenu() {
   const activeName = summaries.find((s) => s.id === activeId)?.name ?? 'character';
 
   useEffect(() => {
-    if (exportText !== null) exportRef.current?.select();
+    if (exportText !== null) selectAll(exportRef.current);
   }, [exportText]);
 
   /** Parses pasted or loaded JSON and, if valid, asks how to import it. Returns whether it parsed. */
@@ -72,6 +78,20 @@ export function ExportImportMenu() {
   const onFile = async (file: File | undefined) => {
     if (!file) return;
     handleJsonText(await readFileText(file));
+  };
+
+  const copyExport = () => {
+    const ta = exportRef.current;
+    if (!ta) return;
+    ta.focus();
+    selectAll(ta);
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch {
+      ok = false;
+    }
+    pushToast(ok ? 'Copied to clipboard' : 'Copy failed: select the text and copy it by hand');
   };
 
   const submitPaste = () => {
@@ -156,9 +176,9 @@ export function ExportImportMenu() {
       <ConfirmDialog
         open={exportText !== null}
         title="Export JSON"
-        confirmLabel="Close"
-        cancelLabel={null}
-        onConfirm={() => setExportText(null)}
+        confirmLabel="Copy"
+        cancelLabel="Close"
+        onConfirm={copyExport}
         onCancel={() => setExportText(null)}
       >
         <p>iOS 10 cannot download files. Select all, copy, and paste this into the app on another device.</p>
@@ -168,7 +188,7 @@ export function ExportImportMenu() {
           readOnly
           className="mt-2 h-40 w-full rounded border border-zinc-300 bg-white p-2 font-mono text-xs text-zinc-900 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-100"
           value={exportText ?? ''}
-          onFocus={(e) => e.target.select()}
+          onFocus={(e) => selectAll(e.target)}
         />
       </ConfirmDialog>
       <ConfirmDialog open={pasteOpen} title="Paste JSON" confirmLabel="Import" onConfirm={submitPaste} onCancel={() => setPasteOpen(false)}>

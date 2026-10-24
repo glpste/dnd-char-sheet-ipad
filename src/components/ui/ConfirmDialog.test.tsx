@@ -48,10 +48,41 @@ describe('ConfirmDialog on iOS 10', () => {
     expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
   });
 
-  it('cancels when a touch starts on the backdrop', () => {
+  it('cancels on touchend on the backdrop and suppresses the synthesised click', () => {
     const onCancel = vi.fn();
     render(<ConfirmDialog open title="Sure?" confirmLabel="Go" onConfirm={() => {}} onCancel={onCancel} />);
-    fireEvent.touchStart(screen.getByRole('dialog').parentElement!);
+    const backdrop = screen.getByRole('dialog').parentElement!;
+    const touchEnd = new Event('touchend', { bubbles: true, cancelable: true });
+    backdrop.dispatchEvent(touchEnd);
     expect(onCancel).toHaveBeenCalledTimes(1);
+    expect(touchEnd.defaultPrevented).toBe(true);
+  });
+
+  it('does not cancel on touches that end on the panel', () => {
+    const onCancel = vi.fn();
+    render(<ConfirmDialog open title="Sure?" confirmLabel="Go" onConfirm={() => {}} onCancel={onCancel} />);
+    fireEvent.touchEnd(screen.getByRole('dialog'));
+    expect(onCancel).not.toHaveBeenCalled();
+  });
+});
+
+describe('ConfirmDialog with a controlled child', () => {
+  function PasteHarness() {
+    const [open, setOpen] = useState(true);
+    const [text, setText] = useState('');
+    return (
+      <ConfirmDialog open={open} title="Paste" confirmLabel="Import" onConfirm={() => {}} onCancel={() => setOpen(false)}>
+        <textarea aria-label="Box" value={text} onChange={(e) => setText(e.target.value)} />
+      </ConfirmDialog>
+    );
+  }
+
+  it('keeps focus and value in the child while typing, despite an inline onCancel', async () => {
+    render(<PasteHarness />);
+    const box = screen.getByRole('textbox', { name: 'Box' });
+    await userEvent.click(box);
+    await userEvent.type(box, 'abc');
+    expect(box).toHaveValue('abc');
+    expect(box).toHaveFocus();
   });
 });

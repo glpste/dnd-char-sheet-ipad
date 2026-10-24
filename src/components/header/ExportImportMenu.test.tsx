@@ -86,8 +86,32 @@ describe('ExportImportMenu on iOS 10', () => {
     expect(dialog).toBeInTheDocument();
     expect((screen.getByRole('textbox', { name: 'Exported JSON' }) as HTMLTextAreaElement).value).toContain('"Thalia"');
     expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Copy' })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Close' }));
     expect(screen.queryByRole('dialog', { name: 'Export JSON' })).not.toBeInTheDocument();
+  });
+
+  it('Copy selects the whole JSON and copies it through execCommand', async () => {
+    const execCommand = vi.fn(() => true);
+    Object.defineProperty(document, 'execCommand', { value: execCommand, configurable: true });
+    try {
+      renderWithCharacter(
+        <>
+          <ExportImportMenu />
+          <ToastHost />
+        </>,
+      );
+      await userEvent.click(screen.getByRole('button', { name: 'Export / import' }));
+      await userEvent.click(screen.getByRole('menuitem', { name: 'Export Thalia' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Copy' }));
+      const box = screen.getByRole('textbox', { name: 'Exported JSON' }) as HTMLTextAreaElement;
+      expect(execCommand).toHaveBeenCalledWith('copy');
+      expect(box.selectionStart).toBe(0);
+      expect(box.selectionEnd).toBe(box.value.length);
+      expect(screen.getByRole('status')).toHaveTextContent('Copied');
+    } finally {
+      delete (document as { execCommand?: unknown }).execCommand;
+    }
   });
 });
 

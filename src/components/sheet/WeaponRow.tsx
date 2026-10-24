@@ -101,7 +101,7 @@ export function WeaponRow({ weapon, index, count }: { weapon: Weapon; index: num
           </label>
           <label className="flex items-center space-x-2 self-end text-sm">
             <input type="checkbox" aria-label="Proficient" checked={w.proficient} onChange={(e) => update({ proficient: e.target.checked })} className="accent-amber-500" />
-            Proficient
+            <span>Proficient</span>
           </label>
           <label className={labelCls}>
             Magic bonus
