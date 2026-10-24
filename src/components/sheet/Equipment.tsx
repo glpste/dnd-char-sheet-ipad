@@ -9,7 +9,7 @@ export function Equipment() {
   const { character, dispatch } = useCharacter();
   const eq = character.equipment;
   return (
-    <Panel title="Equipment" className="min-h-0">
+    <Panel title="Equipment" className="min-h-0 flex-1">
       <div className="mb-1 flex items-center space-x-2">
         {COINS.map((k) => (
           <label key={k} className="flex items-center space-x-1 text-[10px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
@@ -29,10 +29,10 @@ export function Equipment() {
         aria-label="Equipment"
         value={eq.text}
         autoGrow={false}
-        minRows={3}
-        placeholder="Explorer's pack, 50 ft rope, 20 arrows…"
+        minRows={6}
+        placeholder={['Explorer’s pack', '50 ft rope', '20 arrows…'].join('\n')}
         onChange={(text) => dispatch({ type: 'patch', patch: { equipment: { text } } })}
-        className="max-h-24 overflow-y-auto"
+        className="h-full min-h-0 flex-1 overflow-y-auto"
       />
     </Panel>
   );

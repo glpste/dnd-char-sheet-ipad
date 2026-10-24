@@ -46,10 +46,13 @@ describe('SheetView', () => {
     expect(region.className).toMatch(/max-h-/);
   });
 
-  it('equipment text is height-capped', () => {
+  it('equipment text fills the rest of the column and scrolls inside', () => {
     renderWithCharacter(<SheetView />);
     const eq = screen.getByLabelText('Equipment');
     expect(eq.className).toContain('overflow-y-auto');
-    expect(eq.className).toMatch(/max-h-/);
+    expect(eq.className).toContain('flex-1');
+    expect(eq.className).not.toMatch(/max-h-/);
+    expect(eq).toHaveAttribute('rows', '6');
+    expect(eq.closest('section')?.className).toContain('flex-1');
   });
 });
