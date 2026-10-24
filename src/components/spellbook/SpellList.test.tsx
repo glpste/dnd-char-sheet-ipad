@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { newSpell } from '../../model/character';
 import { ranger, renderWithCharacter } from '../../test/renderWithCharacter';
@@ -59,5 +59,15 @@ describe('SpellList', () => {
     expect(names()).not.toContain('Fire Bolt');
     await userEvent.click(screen.getByRole('button', { name: 'Undo' }));
     expect(names()).toContain('Fire Bolt');
+  });
+});
+
+describe('SpellList on iOS 10', () => {
+  it('closes the add-spell menu when a touch starts outside it', async () => {
+    setup();
+    await userEvent.click(screen.getByRole('button', { name: 'Add spell' }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+    fireEvent.touchStart(document.body);
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 });

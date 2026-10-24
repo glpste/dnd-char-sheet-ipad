@@ -49,3 +49,16 @@ describe('NumberField', () => {
     expect(screen.getByTestId('out')).toHaveTextContent('13');
   });
 });
+
+describe('NumberField on iOS 10', () => {
+  it('commits a typed value when unmounted before blur', async () => {
+    const onChange = vi.fn();
+    const { unmount } = render(<NumberField aria-label="Score" value={12} onChange={onChange} />);
+    const input = screen.getByLabelText('Score');
+    await userEvent.clear(input);
+    await userEvent.type(input, '7');
+    expect(onChange).not.toHaveBeenCalled();
+    unmount();
+    expect(onChange).toHaveBeenCalledWith(7);
+  });
+});

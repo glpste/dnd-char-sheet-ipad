@@ -24,16 +24,19 @@ export function CharacterSwitcher({ summaries, activeId, create, duplicate, rena
 
   useEffect(() => {
     if (!open) return;
-    const onDown = (e: MouseEvent) => {
+    // iOS sends no mouse events for taps on non-clickable areas, so listen for touches too.
+    const onDown = (e: Event) => {
       if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
     };
     document.addEventListener('mousedown', onDown);
+    document.addEventListener('touchstart', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('touchstart', onDown);
       document.removeEventListener('keydown', onKey);
     };
   }, [open]);

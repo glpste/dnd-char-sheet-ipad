@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CharacterSwitcher } from './CharacterSwitcher';
 
@@ -40,5 +40,15 @@ describe('CharacterSwitcher', () => {
     expect(r.remove).not.toHaveBeenCalled();
     await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
     expect(r.remove).toHaveBeenCalledWith('a');
+  });
+});
+
+describe('CharacterSwitcher on iOS 10', () => {
+  it('closes when a touch starts outside the menu', async () => {
+    render(<CharacterSwitcher {...roster()} />);
+    await userEvent.click(screen.getByRole('button', { name: /Thalia/ }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+    fireEvent.touchStart(document.body);
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 });

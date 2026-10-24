@@ -11,11 +11,16 @@ function AddSpellMenu({ onAdd }: { onAdd: (level: SpellLevel) => void }) {
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
-    const onDown = (e: MouseEvent) => {
+    // iOS sends no mouse events for taps on non-clickable areas, so listen for touches too.
+    const onDown = (e: Event) => {
       if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
     };
     document.addEventListener('mousedown', onDown);
-    return () => document.removeEventListener('mousedown', onDown);
+    document.addEventListener('touchstart', onDown);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('touchstart', onDown);
+    };
   }, [open]);
   return (
     <div ref={rootRef} className="relative">

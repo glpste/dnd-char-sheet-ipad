@@ -11,6 +11,8 @@ export interface ConfirmDialogProps {
   secondaryLabel?: string;
   onSecondary?: () => void;
   danger?: boolean;
+  /** Label of the cancel button; `null` hides it (for informational dialogs). */
+  cancelLabel?: string | null;
 }
 
 const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -30,6 +32,7 @@ export function ConfirmDialog({
   secondaryLabel,
   onSecondary,
   danger = false,
+  cancelLabel = 'Cancel',
 }: ConfirmDialogProps) {
   const confirmRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -72,6 +75,9 @@ export function ConfirmDialog({
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onCancel();
       }}
+      onTouchStart={(e) => {
+        if (e.target === e.currentTarget) onCancel();
+      }}
     >
       <div
         ref={panelRef}
@@ -93,9 +99,11 @@ export function ConfirmDialog({
               {secondaryLabel}
             </button>
           )}
-          <button type="button" className={btn} onClick={onCancel}>
-            Cancel
-          </button>
+          {cancelLabel !== null && (
+            <button type="button" className={btn} onClick={onCancel}>
+              {cancelLabel}
+            </button>
+          )}
         </div>
       </div>
     </div>

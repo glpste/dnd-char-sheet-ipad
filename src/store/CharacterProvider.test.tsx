@@ -228,6 +228,19 @@ describe('CharacterProvider', () => {
     expect(fake.chars.get(a.id)?.info.name).toBe('A');
   });
 
+  it('duplicate works without structuredClone (iOS 10)', async () => {
+    vi.stubGlobal('structuredClone', undefined);
+    try {
+      const a = newCharacter('A');
+      setup([a]);
+      await act(async () => ctx.current!.duplicate(a.id));
+      expect(screen.getByTestId('name')).toHaveTextContent('A (copy)');
+      expect(screen.getByTestId('count')).toHaveTextContent('2');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('rename of a non-active character updates storage and the summary', async () => {
     const a = newCharacter('A');
     const b = newCharacter('B');

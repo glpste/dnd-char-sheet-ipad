@@ -23,7 +23,7 @@ export function useHashRoute(): [View, (view: View) => void] {
   const setView = useCallback((next: View) => {
     window.location.hash = `#/${next}`;
     // Browsers queue hashchange; notify synchronously so the view flips in the same tick.
-    window.dispatchEvent(new HashChangeEvent('hashchange'));
+    window.dispatchEvent(new Event('hashchange'));
   }, []);
   return [view, setView];
 }

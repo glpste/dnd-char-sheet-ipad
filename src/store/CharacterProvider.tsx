@@ -295,7 +295,7 @@ export function CharacterProvider({ adapter, children }: { adapter: StorageAdapt
       if (!src) return;
       const now = new Date().toISOString();
       const copy: Character = {
-        ...structuredClone(src),
+        ...(JSON.parse(JSON.stringify(src)) as Character),
         id: newId(),
         createdAt: now,
         updatedAt: now,

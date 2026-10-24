@@ -32,6 +32,8 @@ export function NumberField({ value, onChange, min, max, className, signed = fal
   const [editing, setEditing] = useState(false);
   // Enter commits and then blurs; the blur must not commit a second time.
   const committedRef = useRef(false);
+  // iOS Safari does not blur the field when a tap switches views, so commit on unmount too.
+  const latestRef = useRef<{ editing: boolean; text: string; commit: (raw: string) => void }>({ editing: false, text: '', commit: () => {} });
 
   useEffect(() => {
     if (!editing) setText(format(value, signed));
@@ -49,6 +51,14 @@ export function NumberField({ value, onChange, min, max, className, signed = fal
     setText(format(next, signed));
     if (next !== value) onChange(next);
   };
+
+  latestRef.current = { editing, text, commit };
+  useEffect(() => {
+    return () => {
+      const { editing: wasEditing, text: lastText, commit: lastCommit } = latestRef.current;
+      if (wasEditing) lastCommit(lastText);
+    };
+  }, []);
 
   const step = (delta: number) => {
     const next = clamp(value + delta, min, max);

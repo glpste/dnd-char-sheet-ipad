@@ -21,3 +21,16 @@ describe('useHashRoute', () => {
     expect(result.current[0]).toBe('cheatsheet');
   });
 });
+
+describe('useHashRoute on iOS 10', () => {
+  it('sets the view without the HashChangeEvent constructor', () => {
+    vi.stubGlobal('HashChangeEvent', undefined);
+    try {
+      const { result } = renderHook(() => useHashRoute());
+      act(() => result.current[1]('spellbook'));
+      expect(result.current[0]).toBe('spellbook');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+});
