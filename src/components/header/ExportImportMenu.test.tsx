@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { newCharacter } from '../../model/character';
 import { serialize } from '../../store/exportImport';
@@ -53,6 +53,41 @@ describe('ExportImportMenu', () => {
       expect(screen.getByRole('status')).toHaveTextContent('not valid JSON');
       expect(screen.queryByRole('dialog', { name: 'Import characters' })).not.toBeInTheDocument();
     });
+  });
+});
+
+describe('ExportImportMenu on iOS 10', () => {
+  it('closes when a touch starts outside the menu', async () => {
+    renderWithCharacter(<ExportImportMenu />);
+    await userEvent.click(screen.getByRole('button', { name: 'Export / import' }));
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+    fireEvent.touchStart(document.body);
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+  });
+
+  it('imports from a file without Blob.prototype.text', async () => {
+    const original = Object.getOwnPropertyDescriptor(Blob.prototype, 'text');
+    Object.defineProperty(Blob.prototype, 'text', { value: undefined, configurable: true });
+    try {
+      renderWithCharacter(<ExportImportMenu />);
+      const file = new File([serialize([newCharacter('From File')])], 'c.json', { type: 'application/json' });
+      await userEvent.upload(screen.getByLabelText('Import file'), file);
+      expect(await screen.findByRole('dialog', { name: 'Import characters' })).toHaveTextContent('Found 1 character');
+    } finally {
+      if (original) Object.defineProperty(Blob.prototype, 'text', original);
+    }
+  });
+
+  it('shows the export JSON in a dialog instead of downloading', async () => {
+    renderWithCharacter(<ExportImportMenu />);
+    await userEvent.click(screen.getByRole('button', { name: 'Export / import' }));
+    await userEvent.click(screen.getByRole('menuitem', { name: 'Export Thalia' }));
+    const dialog = screen.getByRole('dialog', { name: 'Export JSON' });
+    expect(dialog).toBeInTheDocument();
+    expect((screen.getByRole('textbox', { name: 'Exported JSON' }) as HTMLTextAreaElement).value).toContain('"Thalia"');
+    expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Close' }));
+    expect(screen.queryByRole('dialog', { name: 'Export JSON' })).not.toBeInTheDocument();
   });
 });
 

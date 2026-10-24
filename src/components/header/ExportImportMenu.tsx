@@ -1,9 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ImportResult } from '../../store/CharacterProvider';
-import { downloadJson, parseImport, slugify } from '../../store/exportImport';
+import { parseImport } from '../../store/exportImport';
 import { useRoster, useToast } from '../../store/useCharacter';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { btn, menu, menuItem } from '../ui/styles';
+
+/** Safari 10 has no Blob.prototype.text, so read files the old way. */
+function readFileText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ''));
+    reader.onerror = () => reject(reader.error ?? new Error('Could not read file'));
+    reader.readAsText(file);
+  });
+}
 
 export function importResultMessage(result: ImportResult): string {
   if (!result.ok) return result.error;
@@ -17,28 +27,36 @@ export function ExportImportMenu() {
   const [open, setOpen] = useState(false);
   const [pendingImport, setPendingImport] = useState<{ json: string; count: number; skipped: number } | null>(null);
   const [pasteOpen, setPasteOpen] = useState(false);
+  const [exportText, setExportText] = useState<string | null>(null);
+  const exportRef = useRef<HTMLTextAreaElement>(null);
   const [pasteText, setPasteText] = useState('');
   const rootRef = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
-    const onDown = (e: MouseEvent) => {
+    // iOS sends no mouse events for taps on non-clickable areas, so listen for touches too.
+    const onDown = (e: Event) => {
       if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setOpen(false);
     };
     document.addEventListener('mousedown', onDown);
+    document.addEventListener('touchstart', onDown);
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('touchstart', onDown);
       document.removeEventListener('keydown', onKey);
     };
   }, [open]);
 
   const activeName = summaries.find((s) => s.id === activeId)?.name ?? 'character';
-  const today = new Date().toISOString().slice(0, 10);
+
+  useEffect(() => {
+    if (exportText !== null) exportRef.current?.select();
+  }, [exportText]);
 
   /** Parses pasted or loaded JSON and, if valid, asks how to import it. Returns whether it parsed. */
   const handleJsonText = (json: string): boolean => {
@@ -53,7 +71,7 @@ export function ExportImportMenu() {
 
   const onFile = async (file: File | undefined) => {
     if (!file) return;
-    handleJsonText(await file.text());
+    handleJsonText(await readFileText(file));
   };
 
   const submitPaste = () => {
@@ -83,7 +101,7 @@ export function ExportImportMenu() {
             className={menuItem}
             onClick={() => {
               setOpen(false);
-              downloadJson(`${slugify(activeName)}-${today}.json`, exportOne(activeId));
+              setExportText(exportOne(activeId));
             }}
           >
             Export {activeName}
@@ -94,7 +112,7 @@ export function ExportImportMenu() {
             className={menuItem}
             onClick={() => {
               setOpen(false);
-              downloadJson(`dnd-characters-${today}.json`, exportAll());
+              setExportText(exportAll());
             }}
           >
             Export all characters
@@ -135,6 +153,24 @@ export function ExportImportMenu() {
           e.target.value = '';
         }}
       />
+      <ConfirmDialog
+        open={exportText !== null}
+        title="Export JSON"
+        confirmLabel="Close"
+        cancelLabel={null}
+        onConfirm={() => setExportText(null)}
+        onCancel={() => setExportText(null)}
+      >
+        <p>iOS 10 cannot download files. Select all, copy, and paste this into the app on another device.</p>
+        <textarea
+          ref={exportRef}
+          aria-label="Exported JSON"
+          readOnly
+          className="mt-2 h-40 w-full rounded border border-zinc-300 bg-white p-2 font-mono text-xs text-zinc-900 dark:border-zinc-600 dark:bg-zinc-950 dark:text-zinc-100"
+          value={exportText ?? ''}
+          onFocus={(e) => e.target.select()}
+        />
+      </ConfirmDialog>
       <ConfirmDialog open={pasteOpen} title="Paste JSON" confirmLabel="Import" onConfirm={submitPaste} onCancel={() => setPasteOpen(false)}>
         <p>Paste an exported character (or export file) below.</p>
         <textarea
